@@ -1,25 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import UsersPage from "./components/Users/UsersPage";
+import Modal from "./components/Modal/Modal";
+import { ModalContext } from "./contexts/ModalContext";
+import { useContext } from "react";
+import { Route, Routes } from "react-router-dom";
+import { createPortal } from 'react-dom';
+import UserPage from "./components/UserPage/UserPage";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const {openedModal} = useContext(ModalContext);
+
+    return (
+        <div className="content">
+            {openedModal && (
+                createPortal(<Modal />, document.body)
+            )}
+            <Routes>
+                <Route path="/" element={<UsersPage />} />
+                <Route path="/:id" element={<UserPage />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
